@@ -1,0 +1,17 @@
+# React
+node_modules/
+build/
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+
+# MATLAB / Simulink
+*.slxc
+*.autosave
+*.asv
+~*

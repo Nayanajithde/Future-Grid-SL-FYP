@@ -1,0 +1,10 @@
+import matlab.engine
+eng = matlab.engine.start_matlab()
+eng.cd(r"d:\7Sem\fyp\finalized\SLGrid\Final", nargout=0)
+eng.load_system('Sri_Lanka_S_FINAL', nargout=0)
+print("Step After:", eng.get_param('Sri_Lanka_S_FINAL/LOad Disturbance', 'After'))
+print("Freq Scope Save:", eng.get_param('Sri_Lanka_S_FINAL/Frequecy Response', 'SaveToWorkspace'))
+print("Freq Scope VariableName:", eng.get_param('Sri_Lanka_S_FINAL/Frequecy Response', 'VariableName'))
+print("ROCOF Scope Save:", eng.get_param('Sri_Lanka_S_FINAL/ROCOF', 'SaveToWorkspace'))
+print("ROCOF Scope VariableName:", eng.get_param('Sri_Lanka_S_FINAL/ROCOF', 'VariableName'))
+eng.quit()

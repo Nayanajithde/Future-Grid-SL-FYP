@@ -1,0 +1,2 @@
+fastapi[all]
+matlabengine==24.1.*
