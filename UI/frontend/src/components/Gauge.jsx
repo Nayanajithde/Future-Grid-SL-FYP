@@ -3,7 +3,8 @@ import React from 'react';
 const Gauge = ({ value, label, min, max, unit, size = 'small', color = '#06b6d4' }) => {
   const radius = size === 'large' ? 60 : 40;
   const stroke = size === 'large' ? 8 : 6;
-  const normalizedValue = Math.min(Math.max(value, min), max);
+  const numericValue = typeof value === 'string' && value === 'N/A' ? min : parseFloat(value);
+  const normalizedValue = Math.min(Math.max(numericValue || min, min), max);
   const percentage = (normalizedValue - min) / (max - min);
   const circumference = radius * 2 * Math.PI;
   const strokeDashoffset = circumference - percentage * circumference;

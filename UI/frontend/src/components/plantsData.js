@@ -1,7 +1,11 @@
 export const PLANTS_DATA = [
   { id: 'LAK', name: 'Lakvijaya (Coal)', lat: 8.016, lng: 79.723, type: 'Coal' },
   { id: 'SAM', name: 'Samanalawewa', lat: 6.687, lng: 80.811, type: 'Hydro' },
-  { id: 'KEL', name: 'Kelanitissa', lat: 6.948, lng: 79.880, type: 'Gas' },
+  { id: 'KEL', name: 'Kelanitissa', lat: 6.948, lng: 79.880, type: 'Gas', subUnits: [
+    { id: 'KEL_UNIT1', name: 'Unit 1', nominal: 20 },
+    { id: 'KEL_UNIT2', name: 'Unit 2', nominal: 115 },
+    { id: 'KEL_UNIT3', name: 'Unit 3', nominal: 165 }
+  ] },
   { id: 'UTH', name: 'Uthuru Janani', lat: 9.742, lng: 80.021, type: 'Diesel' },
   { id: 'RAN', name: 'Randenigala', lat: 7.199, lng: 80.956, type: 'Hydro' },
   { id: 'RTB', name: 'Rantambe', lat: 7.202, lng: 80.970, type: 'Hydro' },
@@ -11,21 +15,30 @@ export const PLANTS_DATA = [
   { id: 'MAD', name: 'Maduru Oya Solar', lat: 7.643, lng: 81.168, type: 'Solar' },
   { id: 'LAU', name: 'LAUGFS Hambantota', lat: 6.136, lng: 81.042, type: 'Solar' },
   { id: 'SOC', name: 'Solar One Ceylon', lat: 7.915, lng: 81.082, type: 'Solar' },
-  { id: 'SOBA', name: 'Sobadhanavi', lat: 7.009, lng: 79.873, type: 'Gas' },
+  { id: 'SOBA', name: 'Sobadhanavi', lat: 7.009, lng: 79.873, type: 'Gas', subUnits: [
+    { id: 'SOBA_GT', name: 'Gas Turbine', nominal: 220 },
+    { id: 'SOBA_ST', name: 'Steam Turbine', nominal: 130 }
+  ] },
   { id: 'YUGA', name: 'Yugadhanavi', lat: 7.011, lng: 79.875, type: 'Gas' },
   { id: 'NLX', name: 'New Laxapana', lat: 6.901, lng: 80.490, type: 'Hydro' },
   { id: 'POL', name: 'Polpitiya', lat: 6.980, lng: 80.435, type: 'Hydro' },
   { id: 'UPP', name: 'Uppudaluwa', lat: 8.041, lng: 79.745, type: 'Wind' },
   { id: 'CAN', name: 'Canyon', lat: 6.840, lng: 80.528, type: 'Hydro' },
   { id: 'WIM', name: 'Wimalasurendra', lat: 6.902, lng: 80.505, type: 'Hydro' },
-  { id: 'OLX', name: 'Old Laxapana', lat: 6.899, lng: 80.492, type: 'Hydro' },
+  { id: 'OLX', name: 'Old Laxapana', lat: 6.899, lng: 80.492, type: 'Hydro', subUnits: [
+    { id: 'OLX_1', name: 'Unit 1 (12.5 MVA)', nominal: 12.5 },
+    { id: 'OLX_2', name: 'Unit 2 (8.33 MVA)', nominal: 8.33 }
+  ] },
   { id: 'BRO', name: 'Broadlands', lat: 6.984, lng: 80.407, type: 'Hydro' },
   { id: 'UMA', name: 'Uma Oya', lat: 6.863, lng: 81.026, type: 'Hydro' },
   { id: 'KUK', name: 'Kukuleganga', lat: 6.586, lng: 80.320, type: 'Hydro' },
   { id: 'VIC', name: 'Victoria', lat: 7.240, lng: 80.785, type: 'Hydro' },
   { id: 'KOT', name: 'Kotmale', lat: 7.059, lng: 80.597, type: 'Hydro' },
   { id: 'UKT', name: 'Upper Kotmale', lat: 6.942, lng: 80.648, type: 'Hydro' },
-  { id: 'SAP', name: 'Sapugaskanda', lat: 6.958, lng: 79.940, type: 'Diesel' },
+  { id: 'SAP', name: 'Sapugaskanda', lat: 6.958, lng: 79.940, type: 'Diesel', subUnits: [
+    { id: 'SAP_A', name: 'Station A', nominal: 20 },
+    { id: 'SAP_B', name: 'Station B', nominal: 10 }
+  ] },
   { id: 'BAR', name: 'Colombo Port Barge', lat: 6.949, lng: 79.845, type: 'Diesel' }
 ];
 

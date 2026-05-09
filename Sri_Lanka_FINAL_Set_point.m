@@ -37,7 +37,7 @@ RHT_F_HP = 0.3;      % High-Pressure (HP) turbine power fraction
 RHT_T_RH = 7.0;      % Reheater time constant (Massive steam delay)
 RHT_T_CH = 0.3;      % Steam chest time constant
 
-Pref_Set_LAK = 0;   % set point setting as 0pu
+Pref_Set_LAK = 300;   % set point setting as 0pu
 
 
 
@@ -53,7 +53,7 @@ SAM_T_R = 5.0;
 SAM_R_T = 0.38;        
 SAM_T_W = 1.5;
 
-Pref_set_samanala =0; %set point setting intialize as 0
+Pref_set_samanala =60; %set point setting intialize as 0
 
 % Samanalawewa End =====================================================
 
@@ -69,9 +69,9 @@ KEL_CC_F_GT = 0.67;    % Gas Turbine Power Fraction (110 MW)
 KEL_CC_F_ST = 0.33;    % Steam Turbine Power Fraction (55 MW)
 KEL_CC_T_HRSG = 10.0;  % Heat Recovery Steam Generator Delay (s)
 
-Pref_set_KEL_UNIT1 =0; %set point setting intialize as 0
-Pref_set_KEL_UNIT2 =0; %set point setting intialize as 0
-Pref_set_KEL_UNIT3 =0; %set point setting intialize as 0
+Pref_set_KEL_UNIT1 =20; %set point setting intialize as 0
+Pref_set_KEL_UNIT2 =115; %set point setting intialize as 0
+Pref_set_KEL_UNIT3 =165; %set point setting intialize as 0
 
 %% 4. Kelanitissa Individual Inertia Constants (Seconds)
 KEL_CC_H = 4.0;       % Combined Cycle Block (Heavy dual-rotor system)
@@ -87,7 +87,7 @@ UTH_T_ACT = 0.1;       % Diesel Engine Actuator & Combustion Delay (s)
 UTH_Unit_S_nom = 8e6;  % 8 MVA per unit (3 units total)
 UTH_H = 1.5;           % 1.5s Inertia (Low mass, fast spin)
 
-Pref_Set_UTH = 0;    %set point setting intialize as 0
+Pref_Set_UTH = 8;    %set point setting intialize as 0
 % Uthuru Janani End
 
 %% 6. Randenigala Specific Parameters (Francis Hydro)
@@ -99,7 +99,7 @@ RAN_T_W = 1.2;           % Water Column / Penstock Delay (s)
 RAN_Unit_S_nom = 63e6;   % 63 MVA per unit (2 units total)
 RAN_H = 3.5;             % 3.5s Inertia (Standard for heavy hydro rotors)
 
-Pref_Set_RAN = 0;  %set point setting intialize as 0
+Pref_Set_RAN = 63;  %set point setting intialize as 0
 
 
 
@@ -112,7 +112,7 @@ RTB_T_W = 1.0;           % Water Column / Penstock Delay (s)
 RTB_Unit_S_nom = 26e6;   % 26 MVA per unit (2 units total)
 RTB_H = 3.0;             % 3.0s Inertia
 
-Pref_Set_RTB = 0;  %set point setting intialize as 0
+Pref_Set_RTB = 26;  %set point setting intialize as 0
 
 
 %% 8. Bowatenna Specific Parameters (Francis Hydro)
@@ -124,7 +124,7 @@ BWT_T_W = 1.5;           % Water Column / Penstock Delay (s)
 BWT_Unit_S_nom = 40e6;   % 40 MVA (Only 1 unit!)
 BWT_H = 3.0;             % 3.0s Inertia
 
-Pref_Set_BWT = 0;  %set point setting intialize as 0
+Pref_Set_BWT = 40;  %set point setting intialize as 0
 
 %% 9. Ukuwela Specific Parameters (Francis Hydro)
 UKU_R_P = 0.05;          % 5% Permanent Droop
@@ -135,7 +135,7 @@ UKU_T_W = 1.2;           % Water Column / Penstock Delay (s)
 UKU_Unit_S_nom = 20e6;   % 20 MVA per unit (2 units total)
 UKU_H = 3.0;             % 3.0s Inertia (Standard for this size)
 
-Pref_Set_UKU = 0;  %set point setting intialize as 0
+Pref_Set_UKU = 20;  %set point setting intialize as 0
 
 
 %% 10. Mannar (Thambapavani) Wind Farm Parameters
@@ -195,7 +195,7 @@ SOBA_GT_R = 0.04;        % 4% Droop
 SOBA_GT_T_g = 0.05;      % Fast fuel valve actuator
 SOBA_GT_T_t = 0.2;       % GT torque constant
 
-Pref_Set_SOBA_GT = 0;  %set point setting intialize as 0
+Pref_Set_SOBA_GT = 220;  %set point setting intialize as 0
 
 % Sobadhanavi GT End
 
@@ -209,7 +209,7 @@ SOBA_ST_R = 0.04;        % 4% Droop
 SOBA_ST_T_hrsga = 10.0;  % HRSG "Boiler" lag (Very slow)
 SOBA_ST_T_ch = 0.5;      % Steam chest constant
 
-Pref_Set_SOBA_ST = 0;  %set point setting intialize as 0
+Pref_Set_SOBA_ST = 130;  %set point setting intialize as 0
 
 % Sobadhanavi ST end
 
@@ -235,7 +235,7 @@ YUGA_ST_R = 0.04;
 YUGA_ST_T_hrsga = 15.0;  % HRSG "Boiler" lag (Very slow)
 YUGA_ST_T_ch = 0.3;      % Steam chest constant
 
-Pref_Set_YUGA = 0;  %set point setting intialize as 0
+Pref_Set_YUGA = 100;  %set point setting intialize as 0
 
 %End Yugadhanavi
 
@@ -251,7 +251,7 @@ NLX_T_R = 5.0;            % Reset time (Temporary droop time constant)
 NLX_R_T = 0.40;           % Temporary droop dashpot constant
 NLX_T_W = 1.2;            % Water starting time (Slightly lower than Samanalawewa)
 
-Pref_Set_NLX = 0;  %set point setting intialize as 0
+Pref_Set_NLX = 50;  %set point setting intialize as 0
 
 
 %% Polpitiya Power Station (Hydro - Francis)
@@ -265,7 +265,7 @@ POL_T_R = 5.0;            % Reset time (Transient time constant)
 POL_R_T = 0.40;           % Temporary droop dashpot constant
 POL_T_W = 1.4;            % Water starting time (Slightly lower than Samanalawewa)
 
-Pref_Set_POL = 0;  %set point setting intialize as 0
+Pref_Set_POL = 45;  %set point setting intialize as 0
 
 
 %% Uppudaluwa Wind Farm Parameters
@@ -294,7 +294,7 @@ CAN_T_R = 5.0;            % Reset time (Transient time constant)
 CAN_R_T = 0.38;           % Temporary droop dashpot constant
 CAN_T_W = 1.0;            % Water starting time
 
-Pref_Set_CAN = 0;  %set point setting intialize as 0
+Pref_Set_CAN = 30;  %set point setting intialize as 0
 
 
 %% Wimalasurendra Power Station (Hydro - Francis)
@@ -308,7 +308,7 @@ WIM_T_R = 5.0;            % Reset time (Transient time constant)
 WIM_R_T = 0.38;           % Temporary droop dashpot constant
 WIM_T_W = 1.0;            % Water starting time
 
-Pref_Set_WIM = 0;  %set point setting intialize as 0
+Pref_Set_WIM = 25;  %set point setting intialize as 0
 
 
 %% Old Laxapana Power Station (Hydro - Pelton )
@@ -324,8 +324,8 @@ OLX_T_R = 5.0;            % Reset time (Transient time constant)
 OLX_R_T = 0.38;           % Temporary droop dashpot constant
 OLX_T_W = 1.0;            % Water starting time
 
-Pref_Set_OLX_1 = 0;  %set point setting intialize as 0
-Pref_Set_OLX_2 = 0;  %set point setting intialize as 0
+Pref_Set_OLX_1 = 12.5;  %set point setting intialize as 0
+Pref_Set_OLX_2 = 8.33;  %set point setting intialize as 0
 
 
 
@@ -340,7 +340,7 @@ BRO_T_R = 5.0;            % Reset time (Transient time constant)
 BRO_R_T = 0.38;           % Temporary droop dashpot constant
 BRO_T_W = 1.0;            % Water starting time
 
-Pref_Set_BRO = 0;  %set point setting intialize as 0
+Pref_Set_BRO = 17.5;  %set point setting intialize as 0
 
 
 %% Uma Oya Power Station (Hydro - Pelton)
@@ -353,7 +353,7 @@ UMA_T_R = 5.0;           % Reset time (Transient time constant)
 UMA_R_T = 0.38;          % Temporary droop dashpot constant
 UMA_T_W = 1.5;           % Water starting time
 
-Pref_Set_UMA = 0;  %set point setting intialize as 0
+Pref_Set_UMA = 60;  %set point setting intialize as 0
 
 
 %% Kukuleganga Runoff River power Station (Hydro - Francis)
@@ -366,7 +366,7 @@ KUK_T_R = 5.0;           % Reset time (Transient time constant)
 KUK_R_T = 0.38;          % Temporary droop dashpot constant
 KUK_T_W = 0.8;           % Water starting time
 
-Pref_Set_KUK = 0;  %set point setting intialize as 0
+Pref_Set_KUK = 40;  %set point setting intialize as 0
 
 
 
@@ -383,7 +383,7 @@ VIC_T_R = 5.0;            % Temporary droop reset time
 VIC_R_T = 0.38;           % Temporary droop constant
 VIC_T_W = 1.2;            % Water starting time
 
-Pref_Set_VIC = 0;  %set point setting intialize as 0
+Pref_Set_VIC = 70;  %set point setting intialize as 0
 
 
 %% Kotmale Power Station (Francis - Hydro)
@@ -395,7 +395,7 @@ KOT_T_R = 5.0;
 KOT_R_T = 0.38;
 KOT_T_W = 1.1;            % Slightly shorter penstock delay than Victoria
 
-Pref_Set_KOT = 0;  %set point setting intialize as 0
+Pref_Set_KOT = 67;  %set point setting intialize as 0
 
 
 %% Upper Kotmale Power Station (Francis - Hydro)
@@ -407,7 +407,7 @@ UKT_T_R = 5.0;
 UKT_R_T = 0.40;
 UKT_T_W = 1.4;            % High head leads to higher water inertia
 
-Pref_Set_UKT = 0;  %set point setting intialize as 0
+Pref_Set_UKT = 83;  %set point setting intialize as 0
 
 
 %% Sapugaskanda Power Station
@@ -418,13 +418,13 @@ SAP_T_ACT = 0.1;       % Fast Actuator & Combustion Delay (s)
 SAP_A_Unit_S_nom = 20e6; 
 SAP_A_H = 2.0;         %
 
-Pref_Set_UnitA = 0;  %set point setting intialize as 0
+Pref_Set_UnitA = 20;  %set point setting intialize as 0
 
 % Station B (8 Units - 10 MVA each)
 SAP_B_Unit_S_nom = 10e6; 
 SAP_B_H = 1.8;         % Slightly lower inertia for smaller units
 
-Pref_Set_UnitB = 0;  %set point setting intialize as 0
+Pref_Set_UnitB = 10;  %set point setting intialize as 0
 
 %% Colombo Port Barge
 BAR_Unit_S_nom = 15e6;   % 15 MW per unit (4 units total)
@@ -432,7 +432,7 @@ BAR_H = 2.5;             % Two-stroke engines often have higher rotational mass
 BAR_R = 0.04;
 BAR_T_ACT = 0.1;
 
-Pref_Set_BAR = 0;  %set point setting intialize as 0
+Pref_Set_BAR = 15;  %set point setting intialize as 0
 
 
 

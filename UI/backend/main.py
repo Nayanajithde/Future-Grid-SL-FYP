@@ -82,12 +82,49 @@ async def simulate(req: SimulationRequest):
                 pass
 
         # 3. Map UI Sliders to MATLAB Set Points
+        matlab_setpoint_vars = {
+            'LAK': ['Pref_Set_LAK'],
+            'SAM': ['Pref_set_samanala'],
+            'UTH': ['Pref_Set_UTH'],
+            'RTB': ['Pref_Set_RTB'],
+            'BWT': ['Pref_Set_BWT'],
+            'UKU': ['Pref_Set_UKU'],
+            'RAN': ['Pref_Set_RAN'],
+            'NLX': ['Pref_Set_NLX'],
+            'POL': ['Pref_Set_POL'],
+            'CAN': ['Pref_Set_CAN'],
+            'WIM': ['Pref_Set_WIM'],
+            'BRO': ['Pref_Set_BRO'],
+            'UMA': ['Pref_Set_UMA'],
+            'KUK': ['Pref_Set_KUK'],
+            'VIC': ['Pref_Set_VIC'],
+            'KOT': ['Pref_Set_KOT'],
+            'UKT': ['Pref_Set_UKT'],
+            'BAR': ['Pref_Set_BAR'],
+            'YUGA': ['Pref_Set_YUGA'],
+            'KEL_UNIT1': ['Pref_set_KEL_UNIT1'],
+            'KEL_UNIT2': ['Pref_set_KEL_UNIT2'],
+            'KEL_UNIT3': ['Pref_set_KEL_UNIT3'],
+            'SOBA_GT': ['Pref_Set_SOBA_GT'],
+            'SOBA_ST': ['Pref_Set_SOBA_ST'],
+            'OLX_1': ['Pref_Set_OLX_1'],
+            'OLX_2': ['Pref_Set_OLX_2'],
+            'SAP_A': ['Pref_Set_UnitA'],
+            'SAP_B': ['Pref_Set_UnitB']
+        }
+        
         for plant_id, mw_value in req.plants_setpoints.items():
-            setpoint_var_name = f"setpoint_{plant_id}"
-            try:
-                eng.workspace[setpoint_var_name] = float(mw_value)
-            except Exception:
-                pass
+            if plant_id in matlab_setpoint_vars:
+                vars_to_set = matlab_setpoint_vars[plant_id]
+                for item in vars_to_set:
+                    try:
+                        if isinstance(item, tuple):
+                            var_name, ratio = item
+                            eng.workspace[var_name] = float(mw_value) * ratio
+                        else:
+                            eng.workspace[item] = float(mw_value)
+                    except Exception as e:
+                        logger.warning(f"Could not set {item}: {e}")
                 
         # 4. Set the Disturbance
         p_dist_pu = float(req.ev_load_mw) / 1000.0
@@ -204,10 +241,10 @@ async def simulate(req: SimulationRequest):
         return {
             "time_series": time_series,
             "metrics": {
-                "systemFrequency": round(final_freq, 2),
-                "rocof": round(max_rocof_val, 2),
-                "nadir": round(nadir, 2),
-                "settlingTime": "N/A" if status == "COLLAPSE" else round(settling_time, 1),
+                "systemFrequency": round(final_freq, 4),
+                "rocof": round(max_rocof_val, 4),
+                "nadir": round(nadir, 4),
+                "settlingTime": "N/A" if status == "COLLAPSE" else round(settling_time, 2),
                 "status": status,
                 "suggested_reserves": suggested_reserves
             }

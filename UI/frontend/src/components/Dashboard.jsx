@@ -14,12 +14,37 @@ const initialChartData = Array.from({ length: 50 }, (_, i) => ({
   rocof: 0.0
 }));
 
-// Temporary generation values until backend sends per-plant output.
+// Initial nominal generation values extracted from Sri_Lanka_FINAL_Set_point.m
 const initialPlantGeneration = {
-  LAK: 33, SAM: 28, KEL: 24, UTH: 21, RAN: 17, RTB: 15, BWT: 12, UKU: 10,
-  MAN: 19, MAD: 8, LAU: 7, SOC: 6, SOBA: 22, YUGA: 23, NLX: 18, POL: 16,
-  UPP: 11, CAN: 13, WIM: 14, OLX: 12, BRO: 9, UMA: 20, KUK: 15, VIC: 26,
-  KOT: 25, UKT: 18, SAP: 27, BAR: 21
+  LAK: 300, 
+  SAM: 60, 
+  UTH: 8, 
+  RAN: 63, 
+  RTB: 26, 
+  BWT: 40, 
+  UKU: 20,
+  MAN: 100, 
+  MAD: 100, 
+  LAU: 20, 
+  SOC: 12.6, 
+  YUGA: 100, 
+  NLX: 50, 
+  POL: 45,
+  UPP: 10, 
+  CAN: 30, 
+  WIM: 25, 
+  BRO: 17.5, 
+  UMA: 60, 
+  KUK: 40, 
+  VIC: 70,
+  KOT: 67, 
+  UKT: 83, 
+  BAR: 15,
+  // Multi-unit plants
+  KEL_UNIT1: 20, KEL_UNIT2: 115, KEL_UNIT3: 165,
+  SOBA_GT: 220, SOBA_ST: 130,
+  OLX_1: 12.5, OLX_2: 8.33,
+  SAP_A: 20, SAP_B: 10
 };
 
 const Dashboard = () => {
@@ -27,6 +52,8 @@ const Dashboard = () => {
   const [windPct, setWindPct] = useState(10);
   const [evLoadMW, setEvLoadMW] = useState(50);
   const [plantStatuses, setPlantStatuses] = useState(getInitialPlantStatuses());
+  const [plantSetpoints, setPlantSetpoints] = useState({ ...initialPlantGeneration });
+  const [configPlantId, setConfigPlantId] = useState(null);
   
   const [chartData, setChartData] = useState(initialChartData);
   const [metrics, setMetrics] = useState({
@@ -48,7 +75,18 @@ const Dashboard = () => {
 
   const getPlantGeneration = (plantId) => {
     if (!plantStatuses[plantId]) return 0;
-    return initialPlantGeneration[plantId] ?? 0;
+    const plant = PLANTS_DATA.find(p => p.id === plantId);
+    if (plant && plant.subUnits) {
+      return parseFloat(plant.subUnits.reduce((sum, u) => sum + (plantSetpoints[u.id] || 0), 0).toFixed(2));
+    }
+    return plantSetpoints[plantId] ?? 0;
+  };
+
+  const handleSetpointChange = (id, value) => {
+    setPlantSetpoints(prev => ({
+      ...prev,
+      [id]: parseFloat(value) || 0
+    }));
   };
 
   const getAxisYDomain = (from, to, ref, offset) => {
@@ -99,6 +137,7 @@ const Dashboard = () => {
     setWindPct(10);
     setEvLoadMW(50);
     setPlantStatuses(getInitialPlantStatuses());
+    setPlantSetpoints({ ...initialPlantGeneration });
     setChartData(initialChartData);
     setMetrics({
       systemFrequency: 50.00,
@@ -119,7 +158,8 @@ const Dashboard = () => {
         wind_pct: windPct,
         ev_load_mw: evLoadMW,
         disturbance_type: 'load_disturbance',
-        plants_status: plantStatuses
+        plants_status: plantStatuses,
+        plants_setpoints: plantSetpoints
       });
       
       const { time_series, metrics: newMetrics } = response.data;
@@ -130,8 +170,8 @@ const Dashboard = () => {
         const r = time_series.rocof && time_series.rocof[idx] !== undefined ? time_series.rocof[idx] : 0.0;
         return {
           time: parseFloat(t.toFixed(2)),
-          frequency: parseFloat(f.toFixed(3)),
-          rocof: parseFloat(r.toFixed(3))
+          frequency: parseFloat(f.toFixed(4)),
+          rocof: parseFloat(r.toFixed(4))
         };
       });
       setChartData(formattedData);
@@ -193,10 +233,10 @@ const Dashboard = () => {
     
     setChartData(newData);
     setMetrics({
-      systemFrequency: currentFreq.toFixed(2),
-      rocof: (severity * 1.5).toFixed(2),
-      nadir: nadir.toFixed(2),
-      settlingTime: nadir <= 49.5 ? 'N/A' : (4 + severity * 2).toFixed(1),
+      systemFrequency: currentFreq.toFixed(4),
+      rocof: (severity * 1.5).toFixed(4),
+      nadir: nadir.toFixed(4),
+      settlingTime: nadir <= 49.5 ? 'N/A' : (4 + severity * 2).toFixed(2),
       status: status
     });
     zoomOut();
@@ -275,7 +315,7 @@ const Dashboard = () => {
           <div className="plants-list" style={{ maxHeight: '300px', overflowY: 'auto', paddingRight: '5px' }}>
             {PLANTS_DATA.map(plant => (
               <div key={plant.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', padding: '8px', background: 'rgba(0,0,0,0.2)', borderRadius: '6px' }}>
-                <div>
+                <div onClick={() => plantStatuses[plant.id] && setConfigPlantId(plant.id)} style={{ cursor: plantStatuses[plant.id] ? 'pointer' : 'default' }}>
                   <div style={{ fontSize: '0.85rem', fontWeight: 'bold', color: plantStatuses[plant.id] ? 'var(--text-primary)' : 'var(--text-secondary)' }}>
                     {plant.name} <span style={{ color: 'var(--text-secondary)', fontWeight: 500 }}>{getPlantGeneration(plant.id)} MW</span>
                   </div>
@@ -302,17 +342,17 @@ const Dashboard = () => {
           <h2>Sri Lanka Grid Map</h2>
           <p style={{color: 'var(--text-secondary)', fontSize: '0.85rem'}}>Live Generation Assets Status</p>
         </div>
-        <Map plantStatuses={plantStatuses} />
+        <Map plantStatuses={plantStatuses} onConfigClick={setConfigPlantId} />
       </div>
 
       {/* RIGHT PANEL - Metrics & Charts & Table */}
       <div className="glass-panel right-panel">
         <div className="gauges-container">
-          <Gauge value={metrics.systemFrequency} label="System Frequency" unit="Hz" size="large" color={metrics.status === 'COLLAPSE' ? '#ef4444' : '#eab308'} />
+          <Gauge value={metrics.systemFrequency} label="System Frequency" unit="Hz" min={49.0} max={51.0} size="large" color={metrics.status === 'COLLAPSE' ? '#ef4444' : '#eab308'} />
           <div className="small-gauges">
-            <Gauge value={metrics.rocof} label="RoCoF" unit="Hz/s" size="small" color="#06b6d4" />
-            <Gauge value={metrics.nadir} label="Frequency Nadir" unit="Hz" size="small" color={metrics.nadir <= 49.5 ? '#ef4444' : '#94a3b8'} />
-            <Gauge value={metrics.settlingTime} label="Settling Time" unit="s" size="small" color="#94a3b8" />
+            <Gauge value={metrics.rocof} label="RoCoF" unit="Hz/s" min={-2.0} max={2.0} size="small" color="#06b6d4" />
+            <Gauge value={metrics.nadir} label="Frequency Nadir" unit="Hz" min={49.0} max={50.0} size="small" color={metrics.nadir <= 49.5 ? '#ef4444' : '#94a3b8'} />
+            <Gauge value={metrics.settlingTime} label="Settling Time" unit="s" min={0} max={60} size="small" color="#94a3b8" />
           </div>
         </div>
 
@@ -400,6 +440,82 @@ const Dashboard = () => {
           <Play size={14} /> Backend Connection: {isLoading ? 'SIMULATING' : 'IDLE'}
         </div>
       </div>
+
+      {/* Asset Config Modal */}
+      {configPlantId && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, 
+          backgroundColor: 'rgba(0,0,0,0.6)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000
+        }}>
+          <div className="glass-panel" style={{ width: '350px', padding: '20px', display: 'flex', flexDirection: 'column', gap: '15px' }}>
+            <h3 style={{ margin: 0, color: 'var(--accent-blue)' }}>
+              Configure {PLANTS_DATA.find(p => p.id === configPlantId)?.name}
+            </h3>
+            
+            {PLANTS_DATA.find(p => p.id === configPlantId)?.subUnits ? (
+              PLANTS_DATA.find(p => p.id === configPlantId).subUnits.map(unit => (
+                <div key={unit.id} style={{ marginBottom: '10px', paddingBottom: '10px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                    <label style={{ fontSize: '0.9rem' }}>{unit.name} (MW):</label>
+                    <input 
+                      type="number" 
+                      min="0" 
+                      max="500" 
+                      step="0.1"
+                      value={plantSetpoints[unit.id] || 0} 
+                      onChange={(e) => handleSetpointChange(unit.id, e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && setConfigPlantId(null)}
+                      style={{ width: '80px', padding: '5px', borderRadius: '4px', border: '1px solid #475569', background: 'rgba(15, 23, 42, 0.8)', color: '#fff' }}
+                    />
+                  </div>
+                  <input 
+                    type="range" 
+                    min="0" 
+                    max="500" 
+                    step="0.1"
+                    value={plantSetpoints[unit.id] || 0} 
+                    onChange={(e) => handleSetpointChange(unit.id, e.target.value)}
+                    style={{ width: '100%' }}
+                  />
+                </div>
+              ))
+            ) : (
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                  <label>Set Point (MW):</label>
+                  <input 
+                    type="number" 
+                    min="0" 
+                    max="500" 
+                    step="0.1"
+                    value={plantSetpoints[configPlantId] || 0} 
+                    onChange={(e) => handleSetpointChange(configPlantId, e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && setConfigPlantId(null)}
+                    style={{ width: '80px', padding: '5px', borderRadius: '4px', border: '1px solid #475569', background: 'rgba(15, 23, 42, 0.8)', color: '#fff' }}
+                  />
+                </div>
+                <input 
+                  type="range" 
+                  min="0" 
+                  max="500" 
+                  step="0.1"
+                  value={plantSetpoints[configPlantId] || 0} 
+                  onChange={(e) => handleSetpointChange(configPlantId, e.target.value)}
+                  style={{ width: '100%' }}
+                />
+              </div>
+            )}
+            
+            <button 
+              className="action-btn" 
+              onClick={() => setConfigPlantId(null)}
+              style={{ margin: 0, marginTop: '5px' }}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

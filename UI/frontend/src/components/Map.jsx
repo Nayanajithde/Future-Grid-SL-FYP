@@ -26,7 +26,7 @@ const createCustomIcon = (status, type) => {
   });
 };
 
-const Map = ({ plantStatuses }) => {
+const Map = ({ plantStatuses, onConfigClick }) => {
   // Center of Sri Lanka
   const center = [7.8731, 80.7718];
 
@@ -55,6 +55,20 @@ const Map = ({ plantStatuses }) => {
                 <strong style={{ color: isOperating ? 'var(--accent-green)' : 'var(--accent-red)' }}>
                   Status: {isOperating ? 'OPERATING' : 'DISCONNECTED'}
                 </strong>
+                {isOperating && onConfigClick && (
+                  <div style={{ marginTop: '10px' }}>
+                    <button 
+                      onClick={() => onConfigClick(plant.id)}
+                      style={{ 
+                        width: '100%', padding: '6px', fontSize: '0.8rem', 
+                        background: 'var(--accent-blue)', color: '#fff', 
+                        border: 'none', borderRadius: '4px', cursor: 'pointer' 
+                      }}
+                    >
+                      Configure Set Point
+                    </button>
+                  </div>
+                )}
               </div>
             </Popup>
           </Marker>
